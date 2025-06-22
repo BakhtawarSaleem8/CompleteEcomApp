@@ -94,12 +94,22 @@ server.use(
 server.use(passport.authenticate('session'));
 
 
-
+const allowedOrigins = [
+  'http://localhost:5173', // Local dev
+  'https://your-app.vercel.app', // Your Vercel frontend
+  // Add other domains as needed
+];
 
 server.use(
   cors({
-    origin: 'http://localhost:5173', // Your frontend origin
-    credentials: true, // This is crucial
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
     exposedHeaders: ['X-Total-Count']
   })
 );
