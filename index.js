@@ -96,7 +96,7 @@ server.use(passport.authenticate('session'));
 
 const allowedOrigins = [
   'http://localhost:5173', // Local dev
-  'https://your-app.vercel.app', // Your Vercel frontend
+  'https://complete-ecomapp.vercel.app/', // Your Vercel frontend
   // Add other domains as needed
 ];
 
@@ -121,7 +121,9 @@ server.use((req, res, next) => {
   //console.log('Cookies:', req.cookies);
   //console.log('Headers:', req.headers['cookie']);
   next()}) // to parse req.body
-
+server.use('/' , (req , res , next)=>{
+  res.send("hello world")
+})
 server.use('/products', isAuth(), productsRouter.router);
 // we can also use JWT token for client-only auth
 server.use('/categories', isAuth(), categoriesRouter.router);
